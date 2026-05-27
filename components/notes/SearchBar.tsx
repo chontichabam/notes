@@ -1,33 +1,81 @@
 'use client'
+
 import { useState, useCallback } from 'react'
 import { useNotes } from '@/lib/hooks/useNotes'
 import { debounce } from 'lodash'
 
 export default function SearchBar() {
   const [query, setQuery] = useState('')
-  const { searchNotes, refetch } = useNotes()
+
+  const { searchNotes, refetch } =
+    useNotes()
 
   const doSearch = useCallback(
     debounce((q: string) => {
-      if (q.trim()) searchNotes(q)
-      else refetch()
+      if (q.trim()) {
+        searchNotes(q)
+      } else {
+        refetch()
+      }
     }, 400),
     []
   )
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
     setQuery(e.target.value)
     doSearch(e.target.value)
   }
 
   return (
     <div className="relative">
-      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-white/30 text-sm">🔍</span>
+
+      {/* Search Icon */}
+      <span
+        className="
+        absolute
+        left-4
+        top-1/2
+        -translate-y-1/2
+        text-slate-400
+        text-sm
+      "
+      >
+        🔍
+      </span>
+
       <input
-        value={query} onChange={handleChange}
+        value={query}
+        onChange={handleChange}
         placeholder="Search notes..."
-        className="w-full pl-9 pr-4 py-2 rounded-xl bg-white/5 border border-white/10 text-sm text-white placeholder-white/30 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition"
+        className="
+        w-full
+        pl-11
+        pr-4
+        py-3
+        rounded-2xl
+
+        bg-white/80
+        backdrop-blur-xl
+
+        border
+        border-pink-100
+
+        text-slate-700
+        placeholder:text-slate-400
+
+        shadow-sm
+
+        focus:outline-none
+        focus:ring-4
+        focus:ring-pink-100
+        focus:border-pink-200
+
+        transition-all
+      "
       />
+
     </div>
   )
 }
